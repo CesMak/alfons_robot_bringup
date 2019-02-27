@@ -1,5 +1,5 @@
 <launch>
     <arg name="pos_throttle" default="0" />
-    <node pkg="rostopic" type="rostopic" name="rostopic_set_throttle" args="  pub /robot/throttle std_msgs/Int32 'data: $(arg pos_throttle)' "/>
+    <node pkg="rostopic" type="rostopic" name="rostopic_set_throttle" args="  pub /robot/throttle std_msgs/Int16 'data: $(arg pos_throttle)' "/>
 
 </launch>

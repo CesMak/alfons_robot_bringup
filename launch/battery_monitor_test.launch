@@ -35,13 +35,13 @@
       <!-- set motor -->
       <node pkg="timed_roslaunch" type="timed_roslaunch.sh"
         args="10 alfons_robot_bringup test_throttle.launch
-          pos_throttle:=50"
+          pos_throttle:=150"
         name="pos_forward" output="screen">
       </node>
 
       <node pkg="timed_roslaunch" type="timed_roslaunch.sh"
         args="14 alfons_robot_bringup test_throttle.launch
-          pos_throttle:=-100"
+          pos_throttle:=-200"
         name="pos_backward" output="screen">
       </node>
 
@@ -49,6 +49,24 @@
         args="20 alfons_robot_bringup test_throttle.launch
           pos_throttle:=0"
         name="pos_brake" output="screen">
+      </node>
+
+      <node pkg="timed_roslaunch" type="timed_roslaunch.sh"
+        args="22 alfons_robot_bringup test_steering.launch
+          pos_steering:=250"
+        name="pos_left" output="screen">
+      </node>
+
+      <node pkg="timed_roslaunch" type="timed_roslaunch.sh"
+        args="25 alfons_robot_bringup test_steering.launch
+          pos_steering:=-250"
+        name="pos_right" output="screen">
+      </node>
+
+      <node pkg="timed_roslaunch" type="timed_roslaunch.sh"
+        args="28 alfons_robot_bringup test_steering.launch
+          pos_steering:=0"
+        name="pos_brake_steering" output="screen">
       </node>
 
 </launch>

@@ -16,6 +16,8 @@
 //[ERROR] [1551272209.509575]: Unable to sync with device;
 //possible link problem or link software version mismatch such as hydro rosserial_python with groovy Arduino
 // See: https://answers.ros.org/question/222964/rosserial-too-big-for-arduino/
+// Minimum 197 bytes for local variables required!!! (otherwise above error!)
+//  _<ArduinoHardware, 2, 2, 80, 105>   --> does not work
 // Limit Number of Publishers/Subscriber and their length
 // 2)
 // sometimes servo is referenced instead of motors....
@@ -50,8 +52,9 @@
 #include <SharpIR.h>
 #include <Servo.h>
 #include <sensor_msgs/BatteryState.h>
-#include <std_msgs/Float64.h>
-#include <std_msgs/Int8.h>
+#include <std_msgs/Float32.h>
+#include <std_msgs/Int16.h>
+//#include <alfons_msgs/RobotCommand.h>
 
 // SharpSensor:
 #define IR 2        // define signal pin of Sharp Sensor
@@ -82,15 +85,15 @@
 
 // SharpSensor:
 SharpIR SharpIR(IR, model);
-std_msgs::Float64 sharp_dis;
+std_msgs::Float32 sharp_dis;
 ros::Publisher sharp_dis_pub("robot/sharp_dis", &sharp_dis);
 
 // Servo:
 Servo SensorServo;  // Mit diesem Element wird der Servo gesteuert
 byte ServoPosition = 90;
 boolean TurnServo = RIGHT;
-std_msgs::Int8 servo_pos;
-ros::Publisher servo_pos_pub("robot/servo_pos", &servo_pos);
+std_msgs::Int16 servo_pos;
+//ros::Publisher servo_pos_pub("robot/servo_pos", &servo_pos);
 
 // Battery:
 double cell_const[MAX_CELLS] =
@@ -213,25 +216,25 @@ void loopReadSharp()
   sharp_dis_pub.publish( &sharp_dis );
 }
 
-void loopReadServo()
-{
-  servo_pos.data = SensorServo.read();  // int value
-  servo_pos_pub.publish( &servo_pos);
-}
+//void loopReadServo()
+//{
+//  servo_pos.data = SensorServo.read();  // int value
+//  servo_pos_pub.publish( &servo_pos);
+//}
 
 
 // callbacks:
-void servoPosCb(const std_msgs::Int8& msg)
+void servoPosCb(const std_msgs::Int16& msg)
 {
   SensorServo.write( msg.data );
 }
 
-void setDtCb(const std_msgs::Int8& msg)
-{
-  dt_ms  = msg.data;
-}
+//void setDtCb(const std_msgs::Int16& msg)
+//{
+//  dt_ms  = msg.data;
+//}
 
-void setThrottleCb(const std_msgs::Int8 &msg)
+void setThrottleCb(const std_msgs::Int16 &msg)
 {
   if (msg.data > 0)
   {
@@ -254,15 +257,37 @@ void setThrottleCb(const std_msgs::Int8 &msg)
   }
 }
 
+void setSteeringCb(const std_msgs::Int16 &msg)
+{
+  if (msg.data > 0)
+  {
+    digitalWrite( DIR_B, HIGH );
+    analogWrite( PWM_B, msg.data );
+    digitalWrite( BRAKE_B, LOW );
+  }
+  else if(msg.data < 0)   // drive backward:
+  {
+    digitalWrite( DIR_B, LOW );
+    analogWrite( PWM_B, (msg.data*-1) );
+    digitalWrite( BRAKE_B, LOW );
+  }
+  else // stop 
+  {
+    analogWrite( PWM_B, 100 );
+    digitalWrite( BRAKE_B, HIGH );
+  }
+}
+
 /**************************************************************************//**
   Main Setup
 
   Initiates the ROS nodes and subscribes to the ROS topics over ROSSERIAL.
 
 ******************************************************************************/
-ros::Subscriber<std_msgs::Int8> servoPos_sub("/robot/set_servo_pos", &servoPosCb );
-ros::Subscriber<std_msgs::Int8> setDtCb_sub("/robot/set_dt", &setDtCb );
-ros::Subscriber<std_msgs::Int8> setThrottleCb_sub("/robot/throttle", &setThrottleCb );
+ros::Subscriber<std_msgs::Int16> servoPos_sub("/robot/set_servo_pos", &servoPosCb );
+//ros::Subscriber<std_msgs::Int16> setDtCb_sub("/robot/set_dt", &setDtCb );
+ros::Subscriber<std_msgs::Int16> setThrottleCb_sub("/robot/throttle", &setThrottleCb );
+ros::Subscriber<std_msgs::Int16> setSteeringCb_sub("/robot/steering", &setSteeringCb );
 void setup()
 {
   // Launch ROS node and set parameters.
@@ -271,12 +296,14 @@ void setup()
   // Setup publishers.
   nh.advertise(batteryState);
   nh.advertise(sharp_dis_pub);
-  nh.advertise(servo_pos_pub);
+  //nh.advertise(servo_pos_pub);
 
   // Setup subscribers:
   nh.subscribe(servoPos_sub);
-  nh.subscribe(setDtCb_sub);
+  //nh.subscribe(setDtCb_sub);
   nh.subscribe(setThrottleCb_sub);
+  nh.subscribe(setSteeringCb_sub);
+
 
   setupBattery();
   setupMotors();
@@ -284,7 +311,6 @@ void setup()
   // setup Servo:
   SensorServo.attach( SERVO );
   SensorServo.write( 105 );
-
 }
 
 
@@ -303,7 +329,7 @@ void loop()
 {
   loopBattery();
   loopReadSharp();
-  loopReadServo();
+//  loopReadServo();
 
   nh.spinOnce();
   delay(dt_ms);  // wait 1000 ms

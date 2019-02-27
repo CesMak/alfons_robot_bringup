@@ -1,0 +1,5 @@
+<launch>
+    <arg name="pos_steering" default="0" />
+    <node pkg="rostopic" type="rostopic" name="rostopic_set_steering" args="  pub /robot/steering std_msgs/Int16 'data: $(arg pos_steering)' "/>
+
+</launch>
