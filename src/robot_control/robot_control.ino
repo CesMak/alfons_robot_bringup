@@ -51,7 +51,7 @@
 #include <Servo.h>
 #include <sensor_msgs/BatteryState.h>
 #include <std_msgs/Float64.h>
-#include <std_msgs/Int32.h>
+#include <std_msgs/Int8.h>
 
 // SharpSensor:
 #define IR 2        // define signal pin of Sharp Sensor
@@ -89,7 +89,7 @@ ros::Publisher sharp_dis_pub("robot/sharp_dis", &sharp_dis);
 Servo SensorServo;  // Mit diesem Element wird der Servo gesteuert
 byte ServoPosition = 90;
 boolean TurnServo = RIGHT;
-std_msgs::Int32 servo_pos;
+std_msgs::Int8 servo_pos;
 ros::Publisher servo_pos_pub("robot/servo_pos", &servo_pos);
 
 // Battery:
@@ -100,7 +100,7 @@ double cell_const[MAX_CELLS] =
   8.4667, 9.2353, 11.0000, 11.0000
 };
 
-ros::NodeHandle nh; // _<ArduinoHardware, 2, 2, 80, 105>
+ros::NodeHandle nh; // _<ArduinoHardware, 2, 2, 80, 105> --> hiermit get es nicht!
 sensor_msgs::BatteryState batt_state;
 
 ros::Publisher batteryState("/robot/battery/info", &batt_state);
@@ -221,17 +221,17 @@ void loopReadServo()
 
 
 // callbacks:
-void servoPosCb(const std_msgs::Int32& msg)
+void servoPosCb(const std_msgs::Int8& msg)
 {
   SensorServo.write( msg.data );
 }
 
-void setDtCb(const std_msgs::Int32& msg)
+void setDtCb(const std_msgs::Int8& msg)
 {
   dt_ms  = msg.data;
 }
 
-void setThrottleCb(const std_msgs::Int32 &msg)
+void setThrottleCb(const std_msgs::Int8 &msg)
 {
   if (msg.data > 0)
   {
@@ -260,9 +260,9 @@ void setThrottleCb(const std_msgs::Int32 &msg)
   Initiates the ROS nodes and subscribes to the ROS topics over ROSSERIAL.
 
 ******************************************************************************/
-ros::Subscriber<std_msgs::Int32> servoPos_sub("/robot/set_servo_pos", &servoPosCb );
-ros::Subscriber<std_msgs::Int32> setDtCb_sub("/robot/set_dt", &setDtCb );
-ros::Subscriber<std_msgs::Int32> setThrottleCb_sub("/robot/throttle", &setThrottleCb );
+ros::Subscriber<std_msgs::Int8> servoPos_sub("/robot/set_servo_pos", &servoPosCb );
+ros::Subscriber<std_msgs::Int8> setDtCb_sub("/robot/set_dt", &setDtCb );
+ros::Subscriber<std_msgs::Int8> setThrottleCb_sub("/robot/throttle", &setThrottleCb );
 void setup()
 {
   // Launch ROS node and set parameters.
@@ -275,7 +275,7 @@ void setup()
 
   // Setup subscribers:
   nh.subscribe(servoPos_sub);
-  //nh.subscribe(setDtCb_sub);
+  nh.subscribe(setDtCb_sub);
   nh.subscribe(setThrottleCb_sub);
 
   setupBattery();
