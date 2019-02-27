@@ -15,6 +15,8 @@
 // Do not use more than 89% of dynamic memory otherwise connection fails!!!
 //[ERROR] [1551272209.509575]: Unable to sync with device;
 //possible link problem or link software version mismatch such as hydro rosserial_python with groovy Arduino
+// See: https://answers.ros.org/question/222964/rosserial-too-big-for-arduino/
+// Limit Number of Publishers/Subscriber and their length
 // 2)
 // sometimes servo is referenced instead of motors....
 
@@ -76,12 +78,7 @@
 #define BRAKE_A   9    // Bremse A
 #define BRAKE_B   8    // Bremse B
 #define PWM_A     3    // Geschwindigkeit A
- 
-// Nützliche Einstellungen:
-#define FULL_SPEED        190             // Vollgas ist 255, höher geht nicht. Erstmal nur die halbe Geschwindigkeit...
 
-#define SPEED_TURN_A      150
-#define SPEED_BACK_B      80
 
 // SharpSensor:
 SharpIR SharpIR(IR, model);
@@ -103,7 +100,7 @@ double cell_const[MAX_CELLS] =
   8.4667, 9.2353, 11.0000, 11.0000
 };
 
-ros::NodeHandle nh;
+ros::NodeHandle nh; // _<ArduinoHardware, 2, 2, 80, 105>
 sensor_msgs::BatteryState batt_state;
 
 ros::Publisher batteryState("/robot/battery/info", &batt_state);
@@ -243,20 +240,17 @@ void setThrottleCb(const std_msgs::Int32 &msg)
     analogWrite( PWM_A, msg.data );
     // ..Bremsen lösen!
     digitalWrite( BRAKE_A, LOW );
-    nh.logwarn(">0");
   }
   else if(msg.data < 0)   // drive backward:
   {
     digitalWrite( DIR_A, LOW );
     analogWrite( PWM_A, (msg.data*-1) );
     digitalWrite( BRAKE_A, LOW );
-    nh.logwarn("<0");
   }
   else // stop 
   {
-    analogWrite( PWM_A, FULL_SPEED );
+    analogWrite( PWM_A, 100 );
     digitalWrite( BRAKE_A, HIGH );
-    nh.logwarn("=0");
   }
 }
 

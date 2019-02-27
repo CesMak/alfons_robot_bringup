@@ -1,0 +1,4 @@
+<launch>
+    <arg name="pos_servo" default="105" />
+    <node pkg="rostopic" type="rostopic" name="rostopic_set_pos" args="  pub /robot/set_servo_pos std_msgs/Int32 'data: $(arg pos_servo)' "/>
+</launch>

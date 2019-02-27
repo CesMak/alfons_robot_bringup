@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="rostopic" type="rostopic" name="rostopic_echo_servo_pos" args="echo /robot/servo_pos" output="screen"/>
+    <node pkg="rostopic" type="rostopic" name="rostopic_echo_sharp_val" args="echo /robot/sharp_dis" output="screen"/>
+    <node pkg="rostopic" type="rostopic" name="rostopic_echo_battery" args="echo /robot/battery/info" output="screen"/>
+</launch>
