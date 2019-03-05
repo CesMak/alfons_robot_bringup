@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="start_rviz" default="True" />
+
+    <group if="$(arg start_rviz)" >
+        <node pkg="rviz" type="rviz" name="rviz" args="-d $(find alfons_robot_bringup)/config/aruco_mapping.rviz"/>
+    </group>
+
+   <!--   usb_cam node, as pixel_format use yuyv or mjpeg -->
+  <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <param name="video_device" value="/dev/video1" />
+    <param name="image_width" value="1920" />
+    <param name="image_height" value="1080" />
+    <param name="pixel_format" value="yuyv" /> 
+    <param name="camera_frame_id" value="usb_cam" />
+    <param name="io_method" value="mmap"/>
+  </node>
+
+  <!-- ArUco mapping as space_type use 3D or plane 
+-->
+  <node pkg="aruco_mapping" type="aruco_mapping" name="aruco_mapping" output="screen">
+    <remap from="/image_raw" to="/usb_cam/image_raw"/>
+
+    <param name="calibration_file" type="string" value="$(find alfons_robot_bringup)/config/logitech_calib.ini"/>
+    <param name="num_of_markers" type="int" value="20" />
+    <param name="marker_size" type="double" value="0.1"/>
+    <param name="space_type" type="string" value="3D" />
+    <param name="roi_allowed" type="bool" value="false" />
+  </node>
+
+</launch>
