@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a [ROS] package developed for alfons which is a mobile robot that is carlike. This means it is controlled via ackermann steering. This package is actually the main package to bringup the alfons robot it utilizes a launch file that includes the launch file of many other alfons packages (see Dependencies)
+This is a [ROS] package developed for alfons which is a mobile robot that is carlike. This means it is controlled via ackermann steering. This package includes the main launch file to start the alfons robot. The source code of this project has to be flashed onto the arduino uno using the Arduino IDE.
 
 This package has been tested under ROS Kinetic and Ubuntu 16.04. This is research code, expect that it changes often and any fitness for a particular purpose is disclaimed.
 
@@ -17,22 +17,34 @@ Maintainer: Markus Lamprecht, 2f4yor@gmail.com<br />**
 
 This software is built on the Robotic Operating System ([ROS]), which needs to be [installed](http://wiki.ros.org) first. Additionally, this package depends on following software:
 
-- [alfons_msgs] messages.
+- arduino IDE necessary to flash program to the arduino UNO
+- create the symlink SharpIR in /home/arduino/arduino-1.8.5/libraries to /libs/SharpIR of this package
+- [alfons_msgs] messages for the project
+- [simple_kf]
 - [aruco_detector_osv]
-- [aruco_detector_osv]
+- [rviz_pics]
+- [tf_mapping] 
 
 ### Building
 
 In order to install this package, clone the latest version from this repository into your catkin workspace and compile the package using [catkin_tools](https://catkin-tools.readthedocs.io/en/latest/)
 
     cd catkin_workspace/src
-    git clone https://github.com/cesmak/alfons_robot_bringup.git
+    git clone git@github.com:CesMak/alfons_robot_bringup.git
     cd ..
     catkin init
     catkin build
 
 
 ## Basic Usage
+
+- Connect sensor's to the board as follows (Description also available at the begin of /src/robot_control/robot_control.ino)
+<img alt="alfons" src="data/connection.png" width="600">
+- Connect aruduino uno with PC
+- Connect camera with PC
+- Start arduino IDE with the code of this project **/src/robot_control/robot_control.ino**
+- Flash code to arduino uno
+
 
 ### Main Launch file
 

@@ -1,12 +1,7 @@
 /**************************************************************************//**
-   ROS NODE: VOLTAGE MONITORING SENSOR
-
-
-   @author  Duncan Iglesias
-   @company Arkbro Inc.
-   @date    February 2017
-
-   @link
+   @author  Markus Lamprecht
+   @date    March 2019
+   @link    www.simact.de/about_me
 
  *****************************************************************************/
 
@@ -24,6 +19,8 @@
 
 
 // Connection Battery:
+// Important do not connect battery measurement and voltage to same arduino board
+// this will destroy the board!!!
 //// Red (of Battery measurement) to A0 on right side
 //// Black1 (of Battery measurement) to Gnd on right side of arduino
 
@@ -313,18 +310,6 @@ void setup()
   SensorServo.write( 105 );
 }
 
-
-/**************************************************************************//**
-  Main Function
-
-  Initiates the ROS nodes and subscribes to the ROS topics to respond to
-  incoming motor communication requests. Instantiates the motor controller
-  and publishes the current motor position.
-
-  @param argc   --> Number of input arguements.
-  @aram argv**  --> Array of input arguments.
-
-******************************************************************************/
 void loop()
 {
   loopBattery();
@@ -335,9 +320,6 @@ void loop()
   delay(dt_ms);  // wait 1000 ms
 
 }
-
-/*****************************************************************************/
-
 
 //rostopic echo /crawler/battery/info
 //header:
@@ -359,4 +341,3 @@ void loop()
 //cell_voltage: []
 //location: "Crawler"
 //serial_number: "ABC_0001"
-
