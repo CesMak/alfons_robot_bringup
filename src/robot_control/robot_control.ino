@@ -2,7 +2,7 @@
    @author  Markus Lamprecht
    @date    March 2019
    @link    www.simact.de/about_me
-
+   @Copyright (c) 2019 Markus Lamprecht. BSD
  *****************************************************************************/
 
 // Problems:
