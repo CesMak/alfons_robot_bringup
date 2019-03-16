@@ -9,7 +9,7 @@ This package has been tested under ROS Kinetic and Ubuntu 16.04. This is researc
 **Author: Markus Lamprecht<br />
 Maintainer: Markus Lamprecht, 2f4yor@gmail.com<br />**
 
-<img alt="alfons" src="alfons_robot_bringup/data/alfons.png" width="700">
+<img alt="alfons" src="data/alfons.png" width="700">
 
 ## Installation
 
