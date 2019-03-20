@@ -62,6 +62,9 @@ If you want to use this package please contact: [me](https://simact.de/about_me)
 
 - How to measure battery voltage and use the battery power as well. Currently this is shortcuting and destroing the arduino uno
 - Currently the motor board gets really hot during operation (battery has too much input voltage?, or program too computationally intensive)
+- Part of the hardware (arduino board, arduino motor shield, servo, sharp distance sensor) is contained [here](https://github.com/watterott/StarterKit-Robotics)
+- Docu of the motor shiled [here](https://store.arduino.cc/arduino-motor-shield-rev3)
+- **Use 9V power source of remote control car!**
 
 [ROS]: http://www.ros.org
 [rviz]: http://wiki.ros.org/rviz

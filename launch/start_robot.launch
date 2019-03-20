@@ -3,13 +3,13 @@
     <arg name="bag_name" default="todo" /> 
     <arg name="start_kf" default="True" />
     <arg name="start_navigate" default="True" />
-    <arg name="start_plotjuggler" default="True" />
+    <arg name="start_plotjuggler" default="False" />
     <arg name="start_rviz"    default="True"/>
 
     <!-- Rosserial: -->
     <arg name="alfons_robot_bringup" default="battery_monitor" doc="Name of ROS package."/>
     <arg name="baud"    default="57600"/>
-    <arg name="port"    default="/dev/ttyACM1"/>
+    <arg name="port"    default="/dev/ttyACM0"/>
 
     <node pkg="rosserial_python" type="serial_node.py" name="$(arg alfons_robot_bringup)_node">
         <param name="port" value="$(arg port)"/>
