@@ -66,6 +66,16 @@ If you want to use this package please contact: [me](https://simact.de/about_me)
 - Docu of the motor shiled [here](https://store.arduino.cc/arduino-motor-shield-rev3)
 - **Use 9V power source of remote control car!**
 
+
+## Hardware Specs
+
+## Log
+
+* First a motor shield rev. 1.0 was used but this heated up very quickly and was therefore not used. 
+* Secondly a [monster moto shield (sparkfun)](https://www.ebay.de/itm/30A-VNH2SP30-Dual-Stepper-Motor-Driver-Monster-Moto-Shield-Module-Motortreiber-/122543212784) see question on [arduion-de-forum](https://forum.arduino.cc/index.php?topic=605814.0)
+* Code to test is taken from [1](https://www.14core.com/wiring-the-vnh2sp30-30a-monster-moto-with-mcu/) and [2](https://www.instructables.com/id/Monster-Motor-Shield-VNH2SP30/)
+* <img alt="alfons" src="data/test_moto_shield.jpg" width="300">
+
 [ROS]: http://www.ros.org
 [rviz]: http://wiki.ros.org/rviz
 [grid_map_msg/GridMap]: https://github.com/anybotics/grid_map/blob/master/grid_map_msg/msg/GridMap.msg
